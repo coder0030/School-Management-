@@ -52,7 +52,7 @@ public class ClassEntity {
     private List<Exam> examsList = new ArrayList<>();
 
     @OneToMany(mappedBy = "classEntity", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<FeeStructure> FeeStructureList = new ArrayList<>();
+    private List<FeeStructure> feeStructureList = new ArrayList<>();
 
     @OneToMany(mappedBy = "classEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Student> studentList = new ArrayList<>();
@@ -125,12 +125,12 @@ public class ClassEntity {
     }
 
     public void addFeesStructure(FeeStructure feeStructure) {
-        FeeStructureList.add(feeStructure);
+        feeStructureList.add(feeStructure);
         feeStructure.setClassEntity(this);
     }
 
     public void removeFeesStructure(FeeStructure feeStructure) {
-        FeeStructureList.remove(feeStructure);
+        feeStructureList.remove(feeStructure);
         feeStructure.setClassEntity(null);
     }
 

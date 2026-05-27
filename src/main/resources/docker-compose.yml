@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: school_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: school_management
+      MYSQL_USER: sumit
+      MYSQL_PASSWORD: sumit123
+    ports:
+      - "3307:3306"
+    volumes:
+      - //c/dock-file/mysql_data:/var/lib/mysql  # ← Tera path
+    networks:
+      - school_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: school_app
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/school_management?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: sumit
+      SPRING_DATASOURCE_PASSWORD: sumit123
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - school_network
+
+networks:
+  school_network:
+    driver: bridge

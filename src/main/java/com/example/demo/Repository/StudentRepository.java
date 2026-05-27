@@ -46,7 +46,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     List<Student> findByClassEntity_Id(Long id);
 
-    Optional<Student> findByIdAndStatus(String id, Status status);
+    Optional<Student> findByIdAndStatus(Long id, Status status);
 
     Optional<Student> findByUser_Id(Long currUserId);
 }

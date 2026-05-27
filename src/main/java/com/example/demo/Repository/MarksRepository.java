@@ -16,7 +16,7 @@ public interface MarksRepository extends JpaRepository<Marks, Long> {
 
     Optional<Marks> findByStudent_IdAndSubject_Id(Long studentId, Long subjectId);
 
-    List<Marks> findTopBySubject_IdOrderByMarksObtainedDesc(Long subjectId, int limit);
+    List<Marks> findTopBySubject_IdOrderByMarksObtainedDesc(Long subjectId);
 
     boolean existsByStudent_IdAndSubject_IdAndExam_IdAndIdNot(Long id, Long id1, Long id2, Long id3);
 

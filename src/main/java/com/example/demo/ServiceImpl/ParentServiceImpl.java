@@ -79,7 +79,7 @@ public class ParentServiceImpl implements ParentService {
 
         List<Student> studentList = new ArrayList<>();
         requestDTO.getStudentIds().forEach(id -> {
-            Student student = studentRepository.findByIdAndStatus(String.valueOf(id), Status.ACTIVE).orElse(null);
+            Student student = studentRepository.findByIdAndStatus(id, Status.ACTIVE).orElse(null);
             if (student == null) {
                 throw new BadRequestException("Student id: " + id + " does not exist.");
             }

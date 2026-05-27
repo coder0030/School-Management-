@@ -12,9 +12,9 @@ import java.util.Optional;
 @Repository
 public interface StudentFeeRepository extends JpaRepository<StudentFee, Long> {
 
-    boolean existsByStudent_IdAndClassEntity_IdAndFeeStructure(Long id, Long id1, Long id2);
-
     List<StudentFee> findByClassEntity_Id(Long classId);
 
     List<StudentFee> findByStudent_Id(Long studentId);
+
+    boolean existsByStudent_IdAndClassEntity_IdAndFeeStructure_Id(Long id, Long id1, Long id2);
 }

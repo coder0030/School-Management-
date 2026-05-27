@@ -374,7 +374,7 @@ public class MarksServiceImpl implements MarksService {
             throw new BadRequestException("Subject ID cannot be null");
         }
 
-        List<Marks> marks = marksRepository.findTopBySubject_IdOrderByMarksObtainedDesc(subjectId, limit);
+        List<Marks> marks = marksRepository.findTopBySubject_IdOrderByMarksObtainedDesc(subjectId);
         if (marks == null || marks.isEmpty()) {
             return List.of();
         }

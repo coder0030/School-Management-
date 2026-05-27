@@ -11,13 +11,6 @@ import java.util.Optional;
 @Repository
 public interface ClassRepository extends JpaRepository<ClassEntity, Long> {
 
-
-    static int countByRollNo() {
-        return 0;
-    }
-
-    boolean existsByRoomNo(String roomNo);
-    
     boolean existsByFeeStructureList_Id(Long id);
     
     boolean existsByClassNameAndSectionAndIdNot(String className, String section, Long id);

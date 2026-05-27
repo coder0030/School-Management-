@@ -36,7 +36,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 
     boolean existsByIdAndRole(Long id, Role role);
 
-    List<Teacher> user(User user);
+    List<Teacher> findByUser(User user);
 
     Optional<Teacher> findByUser_Id(Long currUserId);
 }

@@ -65,6 +65,16 @@ public class User implements UserDetails {
     }
 
     @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
     public boolean isAccountNonExpired() {
         return UserDetails.super.isAccountNonExpired();
     }
@@ -96,5 +106,15 @@ public class User implements UserDetails {
 
     public void addRole(Role role) {
         roles.add(role);
+    }
+
+    // User.java mein yeh 2 methods add karo — getAuthorities() ke neeche
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

@@ -66,7 +66,7 @@ public class StudentFeeServiceImpl implements StudentFeeService {
 
         }
 
-        if(studentFeeRepository.existsByStudent_IdAndClassEntity_IdAndFeeStructure(student.getId(),
+        if(studentFeeRepository.existsByStudent_IdAndClassEntity_IdAndFeeStructure_Id(student.getId(),
                 classEntity.getId(), feeStructure.getId())) {
             throw new BadRequestException("student has already opt this feeStructure before.");
         }

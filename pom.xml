@@ -145,6 +145,7 @@
 
 				<configuration>
 					<release>21</release>
+					<parameters>true</parameters>
 				</configuration>
 
 			</plugin>

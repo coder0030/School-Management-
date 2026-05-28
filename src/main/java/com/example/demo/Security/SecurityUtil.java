@@ -32,7 +32,7 @@ public class SecurityUtil {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (auth == null || !auth.isAuthenticated() || auth.getPrincipal() == null) {
-            throw new RuntimeException("No authenticated user found");
+            throw new AccessDeniedException("No authenticated user found");
         }
 
        return (User) auth.getPrincipal();

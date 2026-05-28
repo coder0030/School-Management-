@@ -70,14 +70,14 @@ public class StudentFeeController {
         return ResponseEntity.ok(fees);
     }
 
-    @PostMapping("/class/{classId}/roll/{rollNumber}")
+    @GetMapping("/class/{classId}/roll/{rollNumber}")
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN','ACCOUNTANT')")
     public ResponseEntity<List<StudentFeeResponseDTO>> payFeeByClassAndRoll(@PathVariable Long classId, @PathVariable Integer rollNumber) {
         List<StudentFeeResponseDTO> studentFeeResponseDTO = studentFeeService.getFeeByStudentClassAndRollNo(classId, rollNumber);
         return ResponseEntity.ok(studentFeeResponseDTO);
     }
 
-    @PostMapping("/mobile/{mobileNo}")
+    @GetMapping("/mobile/{mobileNo}")
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN','ACCOUNTANT')")
     public ResponseEntity<List<StudentFeeResponseDTO>> payFeeByMobile(
             @PathVariable String mobileNo,

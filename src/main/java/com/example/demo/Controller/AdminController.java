@@ -91,10 +91,8 @@ public class AdminController {
     }
 
     @DeleteMapping("/deleteId/{id}")
-    @PreAuthorize("""
-            hasRole('SUPERADMIN') and @securityUtil.isCurrAdmin(#id)
-      """)
-    public ResponseEntity<Void> deleteAdmin(@PathVariable Long id) {
+    @PreAuthorize("hasRole('SUPERADMIN') and not @securityUtil.isCurrAdmin(#id)")  // Remove 'not'
+    public ResponseEntity<Void> deleteAdmin(@PathVariable("id") Long id) {
         adminService.deleteAdmin(id);
         return ResponseEntity.noContent().build();
     }

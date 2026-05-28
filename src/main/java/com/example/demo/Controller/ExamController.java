@@ -91,10 +91,7 @@ public class ExamController {
     }
 
     @GetMapping("/student/{studentId}")
-    @PreAuthorize("""
-           hasAnyRole('ADMIN','SUPERADMIN', 'TEACHER'
-           or @securityUtil.isCurrStudent(#studentId)
-           """)
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN', 'TEACHER') or @securityUtil.isCurrStudent(#studentId)")
     public ResponseEntity<Page<ExamDTO>> getExamsByStudent(
             @PathVariable Long studentId,
             @RequestParam(defaultValue = "0") int pageNo,

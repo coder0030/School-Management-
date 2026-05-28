@@ -128,13 +128,10 @@ public class StudentController {
             return new ResponseEntity<>(list, HttpStatus.OK);
         }
 
-        @GetMapping("/student/{studentId}")
-        @PreAuthorize("""
-        hasAnyRole('SUPERADMIN','ADMIN','TEACHER','CLASSTEACHER')
-        or @securityUtil.isCurrStudent(#id)
-        """)
-        public ResponseEntity<List<StudentDTO>> getClassesByStudentId(@PathVariable Long studentId) {
-            List<StudentDTO> list = studentService.getClassesByStudentId(studentId);
-            return new ResponseEntity<>(list, HttpStatus.OK);
-        }
+    @GetMapping("/student/{studentId}")
+    @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN','TEACHER','CLASSTEACHER') or @securityUtil.isCurrStudent(#studentId)")
+    public ResponseEntity<List<StudentDTO>> getClassesByStudentId(@PathVariable Long studentId) {
+        List<StudentDTO> list = studentService.getClassesByStudentId(studentId);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
 }

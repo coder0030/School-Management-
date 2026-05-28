@@ -26,7 +26,7 @@ public class TeacherController {
         return ResponseEntity.ok(created);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN') or @securityUtil.isCurrTeacher(#id)")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN') or @securityUtil.isCurrTeacher(#teacherId)")
     @PutMapping("updateId/{teacherId}")
     public ResponseEntity<TeacherDTO> updateTeacher(@PathVariable Long teacherId,
                                                     @Valid @RequestBody TeacherRequestDTO requestDTO) {
@@ -49,10 +49,7 @@ public class TeacherController {
         return ResponseEntity.ok(patched);
     }
 
-    @PreAuthorize("""
-        hasAnyRole('ADMIN','SUPERADMIN')
-        or @securityUtil.isCurrTeacher(#id)
-    """)
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN') or @securityUtil.isCurrTeacher(#teacherId)")
     @GetMapping("/{teacherId}")
     public ResponseEntity<TeacherDTO> getTeacherById(@PathVariable Long teacherId) {
         TeacherDTO teacherDTO = teacherServiceImpl.getTeacherById(teacherId);

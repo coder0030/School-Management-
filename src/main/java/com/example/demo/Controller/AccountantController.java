@@ -130,16 +130,10 @@ public class AccountantController {
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("""
-            hasRole('SUPERADMIN') or
-            (hasRole('ADMIN')
-            and not @securityUtil.isCurrAccountant(#id))
-            """)
     @DeleteMapping("/deleteId/{id}")
+    @PreAuthorize("hasRole('SUPERADMIN') and not @securityUtil.isCurrAccountant(#id)")
     public ResponseEntity<Void> deleteAccountant(@PathVariable Long id) {
-
         accountantService.deleteAccountant(id);
-
         return ResponseEntity.noContent().build();
     }
 
@@ -154,17 +148,10 @@ public class AccountantController {
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("""
-            hasRole('SUPERADMIN') or
-            (hasRole('ADMIN') and not @securityUtil.isCurrAccountant(#id))
-            """)
     @PatchMapping("/{id}/deactivate")
-    public ResponseEntity<AccountantDTO> deactivateAccountant(
-            @PathVariable Long id) {
-
-        AccountantDTO response =
-                accountantService.deactivateAccountant(id);
-
+    @PreAuthorize("hasRole('SUPERADMIN') and not @securityUtil.isCurrAccountant(#id)")
+    public ResponseEntity<AccountantDTO> deactivateAccountant(@PathVariable Long id) {
+        AccountantDTO response = accountantService.deactivateAccountant(id);
         return ResponseEntity.ok(response);
     }
 

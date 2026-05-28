@@ -114,19 +114,14 @@ public class AdminController {
     }
 
     @PostMapping("/admin/{adminId}/addRole")
-    @PreAuthorize("""
-            hasRole('SUPERADMIN') and not @securityUtil.isCurrAdmin(#id)
-            and #role.name() != 'SUPERADMIN'
-      """)
+    @PreAuthorize("hasRole('SUPERADMIN') and not @securityUtil.isCurrAdmin(#adminId) and #role.name() != 'SUPERADMIN'")
     public ResponseEntity<AdminDTO> addRoleToAdmin(@PathVariable Long adminId, @RequestBody Role role) {
         AdminDTO adminDTO = adminService.addRoleToAdmin(adminId, role);
         return ResponseEntity.ok(adminDTO);
     }
 
-    @PostMapping("/admin/{adminId}/removeRole")
-    @PreAuthorize("""
-         hasRole('SUPERADMIN') and not @securityUtil.isCurrAdmin(#id)
-         """)
+    @DeleteMapping("/admin/{adminId}/removeRole")
+    @PreAuthorize("hasRole('SUPERADMIN') and not @securityUtil.isCurrAdmin(#adminId)")
     public ResponseEntity<AdminDTO> removeRoleFromAdmin(@PathVariable Long adminId, @RequestBody Role role) {
         AdminDTO adminDTO = adminService.removeRoleToAdmin(adminId, role);
         return ResponseEntity.ok(adminDTO);

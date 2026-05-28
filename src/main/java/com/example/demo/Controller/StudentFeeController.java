@@ -28,10 +28,7 @@ public class StudentFeeController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("""
-    hasAnyRole('ADMIN','SUPERADMIN','ACCOUNTANT')
-    or @securityUtil.isCurrStudent(#id)
-    """)
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN','ACCOUNTANT') or @securityUtil.isCurrStudent(#id)")
     public ResponseEntity<StudentFeeResponseDTO> getStudentFeeById(@PathVariable Long id) {
         StudentFeeResponseDTO studentFee = studentFeeService.getStudentFeeById(id);
         return ResponseEntity.ok(studentFee);
@@ -54,10 +51,7 @@ public class StudentFeeController {
     }
 
     @GetMapping("/student/{studentId}")
-    @PreAuthorize("""
-    hasAnyRole('ADMIN','SUPERADMIN','ACCOUNTANT')
-    or @securityUtil.isCurrStudent(#studentId)
-    """)
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN','ACCOUNTANT') or @securityUtil.isCurrStudent(#studentId)")
     public ResponseEntity<List<StudentFeeResponseDTO>> getFeesByStudentId(@PathVariable Long studentId) {
         List<StudentFeeResponseDTO> fees = studentFeeService.getFeesByStudentId(studentId);
         return ResponseEntity.ok(fees);

@@ -23,12 +23,10 @@ public class FeePaymentController {
     private final FeePaymentService feePaymentService;
 
     @PostMapping("/student/{studentId}")
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN','ACCOUNTANT') and " +
-            "@securityUtil.isCurrStudent(#studentId)")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN','ACCOUNTANT') or @securityUtil.isCurrStudent(#studentId)")
     public ResponseEntity<FeePaymentDTO> makePaymentByStudentId(
             @PathVariable Long studentId,
             @Valid @RequestBody FeePaymentRequestDTO requestDTO) {
-
         requestDTO.setStudentId(studentId);
         FeePaymentDTO payment = feePaymentService.makePaymentByStudentId(requestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(payment);
@@ -52,12 +50,10 @@ public class FeePaymentController {
     }
 
     @PostMapping("/mobile/{mobileNo}")
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN','ACCOUNTANT') and " +
-            "@securityUtil.isCurrStudentByPhone(#mobileNo)")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN','ACCOUNTANT') or @securityUtil.isCurrStudentByPhone(#mobileNo)")
     public ResponseEntity<FeePaymentDTO> makePaymentByMobileNumber(
             @PathVariable String mobileNo,
             @Valid @RequestBody FeePaymentRequestDTO requestDTO) {
-
         requestDTO.setMobileNumber(mobileNo);
         FeePaymentDTO payment = feePaymentService.makePaymentByMobileNumber(requestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(payment);

@@ -21,7 +21,7 @@ public class LibrarianController {
 
     private final LibrarianService librarianService;
 
-    @PreAuthorize("hasRole('ADMIN','SUPERADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PostMapping("/create")
     public ResponseEntity<LibrarianDTO> createLibrarian(@Valid @RequestBody LibrarianRequestDTO requestDTO) {
         LibrarianDTO response = librarianService.createLibrarian(requestDTO);
@@ -91,9 +91,7 @@ public class LibrarianController {
     }
 
     @DeleteMapping("/deleteId/{id}")
-    @PreAuthorize("""
-            hasRole('SUPERADMIN') and @securityUtil.isCurrLibrarian(#id)
-      """)
+    @PreAuthorize("hasRole('SUPERADMIN') and not @securityUtil.isCurrLibrarian(#id)")
     public ResponseEntity<Void> deleteLibrarian(@PathVariable Long id) {
         librarianService.deleteLibrarian(id);
         return ResponseEntity.noContent().build();
@@ -107,28 +105,21 @@ public class LibrarianController {
     }
 
     @PatchMapping("/{id}/deactivate")
-    @PreAuthorize("""
-            hasRole('SUPERADMIN') and @securityUtil.isCurrLibrarian(#id)
-      """)
+    @PreAuthorize("hasRole('SUPERADMIN') and not @securityUtil.isCurrLibrarian(#id)")
     public ResponseEntity<LibrarianDTO> deactivateLibrarian(@PathVariable Long id) {
         LibrarianDTO response = librarianService.deactivateLibrarian(id);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{librarianId}/addRole")
-    @PreAuthorize("""
-            hasRole('SUPERADMIN') and @securityUtil.isCurrLibrarian(#librarianId)
-            and #role.name() != 'SUPERADMIN'
-      """)
+    @PreAuthorize("hasRole('SUPERADMIN') and not @securityUtil.isCurrLibrarian(#librarianId) and #role.name() != 'SUPERADMIN'")
     public ResponseEntity<LibrarianDTO> addRoleToLibrarian(@PathVariable Long librarianId, @RequestBody Role role) {
         LibrarianDTO librarianDTO = librarianService.addRoleToLibrarian(librarianId, role);
         return ResponseEntity.ok(librarianDTO);
     }
 
     @PostMapping("/{librarianId}/removeRole")
-    @PreAuthorize("""
-         hasRole('SUPERADMIN') and @securityUtil.isCurrLibrarian(#librarianId)
-         """)
+    @PreAuthorize("hasRole('SUPERADMIN') and not @securityUtil.isCurrLibrarian(#librarianId)")
     public ResponseEntity<LibrarianDTO> removeRoleFromLibrarian(@PathVariable Long librarianId, @RequestBody Role role) {
         LibrarianDTO librarianDTO = librarianService.removeRoleFromLibrarian(librarianId, role);
         return ResponseEntity.ok(librarianDTO);

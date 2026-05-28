@@ -42,9 +42,6 @@ public class Teacher extends Person {
     @JoinColumn(name = "user_id")
     private User user;
 
-//    @OneToMany(mappedBy = "teacher", orphanRemoval = true)
-//    private List<ClassSubject> classSubjectList = new ArrayList<>();
-
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ClassTeacher> classTeacherList = new ArrayList<>();
 

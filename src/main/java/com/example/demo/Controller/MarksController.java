@@ -28,10 +28,7 @@ public class MarksController {
     }
 
     @GetMapping("/student/{studentId}")
-    @PreAuthorize("""
-            hasAnyRole('SUPERADMIN','ADMIN','TEACHER','CLASSTEACHER')
-            or @securityUtil.isCurrSuperAdmin(#studentId)
-            """)
+    @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN','TEACHER','CLASSTEACHER') or @securityUtil.isCurrStudent(#studentId)")
     public ResponseEntity<MarksDTO> getMarksById(@PathVariable Long studentId) {
         MarksDTO marksDTO = marksService.getMarksById(studentId);
         return ResponseEntity.ok(marksDTO);
@@ -78,10 +75,7 @@ public class MarksController {
     }
 
     @GetMapping("/student/{studentId}/subject/{subjectId}")
-    @PreAuthorize("""
-              hasAnyRole('SUPERADMIN','ADMIN','TEACHER','CLASSTEACHER')
-              or @securityUtil.isCurrSuperAdmin(#studentId)
-                  """)
+    @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN','TEACHER','CLASSTEACHER') or @securityUtil.isCurrStudent(#studentId)")
     public ResponseEntity<MarksDTO> getMarksByStudentAndSubject(@PathVariable Long studentId, @PathVariable Long subjectId) {
         MarksDTO marks = marksService.getMarksByStudentAndSubject(studentId, subjectId);
         return ResponseEntity.ok(marks);
@@ -107,10 +101,7 @@ public class MarksController {
     }
 
     @GetMapping("/student/{studentId}/average")
-    @PreAuthorize("""
-               hasAnyRole('SUPERADMIN','ADMIN','TEACHER','CLASSTEACHER')
-               or @securityUtil.isCurrSuperAdmin(#studentId)
-               """)
+    @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN','TEACHER','CLASSTEACHER') or @securityUtil.isCurrStudent(#studentId)")
     public ResponseEntity<Double> getAverageMarksForStudent(@PathVariable Long studentId) {
         Double average = marksService.getAverageMarksForStudent(studentId);
         return ResponseEntity.ok(average);

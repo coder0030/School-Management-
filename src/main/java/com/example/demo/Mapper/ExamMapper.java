@@ -108,14 +108,12 @@ public class ExamMapper {
             builder.passingMarks(examRequestDTO.getPassingMarks());
         }
 
-        // Validate date range
         if (examRequestDTO.getStartDate() != null && examRequestDTO.getEndDate() != null) {
             if (examRequestDTO.getStartDate().isAfter(examRequestDTO.getEndDate())) {
                 throw new IncompleteDataException("Start date cannot be after end date");
             }
         }
 
-        // If any fields are missing, throw exception with details
         if (!missingFields.isEmpty()) {
             String missing = missingFields.substring(0, missingFields.length() - 2);
             throw new IncompleteDataException("Missing required fields: " + missing);
@@ -129,7 +127,6 @@ public class ExamMapper {
             throw new IncompleteDataException("ExamRequestDTO cannot be null");
         }
 
-        // Check for required fields
         if (examRequestDTO.getExamName() == null || examRequestDTO.getExamName().isBlank()) {
             throw new IncompleteDataException("Exam name is required");
         }
@@ -155,20 +152,18 @@ public class ExamMapper {
             throw new IncompleteDataException("Passing marks must be greater than 0");
         }
 
-        // Validate business rules
         if (examRequestDTO.getPassingMarks() > examRequestDTO.getMaxMarks()) {
             throw new IncompleteDataException("Passing marks cannot be greater than max marks");
         }
         if (examRequestDTO.getStartDate().isAfter(examRequestDTO.getEndDate())) {
             throw new IncompleteDataException("Start date cannot be after end date");
         }
-        if (examRequestDTO.getSemester() > 8) { // Assuming max 8 semesters
+        if (examRequestDTO.getSemester() > 8) {
             throw new IncompleteDataException("Semester cannot be greater than 8");
         }
 
-        // Build entity with all fields (no null checks needed since validated above)
 
-        return exam = toEntity(examRequestDTO, exam);
+        return toEntity(examRequestDTO, exam);
     }
 
 

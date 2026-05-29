@@ -6,8 +6,9 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ErrorResponse {
 
     private String message;

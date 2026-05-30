@@ -30,29 +30,27 @@ public class WebSecurityConfiguration {
 
         http
                 .csrf(csrf -> csrf.disable())
-
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
-
-
                 .authorizeHttpRequests(auth -> auth
-
                         .requestMatchers(
                                 "/auth/**",
                                 "/oauth2/**",
                                 "/login/**",
-                                "/error",
-                                "/public/**"
+                                "/error"
                         ).permitAll()
-
                         .anyRequest().authenticated()
-                );
-
-             //   .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .defaultSuccessUrl("/auth/oauth2/success", true)
+                        .failureUrl("/login?error=true")
+                )
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

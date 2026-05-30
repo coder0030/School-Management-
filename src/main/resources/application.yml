@@ -17,7 +17,7 @@ spring:
               - user:email
 
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/school_management}
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3307/school_management}
     username: ${SPRING_DATASOURCE_USERNAME:root}
     password: ${SPRING_DATASOURCE_PASSWORD:root}
 

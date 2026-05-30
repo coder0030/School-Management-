@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest // ✓ Add this for Mockito support
+@SpringBootTest
 @RequiredArgsConstructor
 public class Testing {
 

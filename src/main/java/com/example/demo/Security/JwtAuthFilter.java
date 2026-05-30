@@ -17,22 +17,18 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
-
 @Slf4j
 @RequiredArgsConstructor
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final UserRepository userRepository;
-    private final AuthUtil authil;
+    private final AuthUtil authUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
-
-       // log.info("Incoming request : {}", request.getRequestURI());
 
         final String tokenHeader = request.getHeader("Authorization");
 
@@ -42,38 +38,41 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         try {
-
             String token = tokenHeader.substring(7);
-            String username = authil.getUsernameFromToken(token);
+            String username = authUtil.getUsernameFromToken(token);
 
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if (username != null
+                    && SecurityContextHolder.getContext().getAuthentication() == null
+                    && authUtil.isTokenValid(token)) {
 
-                User user = userRepository.findByUsernameAndIsActive(username, true)
-                        .orElseThrow(() -> new RuntimeException("User not found"));
+                List<String> roleNames = authUtil.getRolesFromToken(token);
 
-              //  List<String> authoritie = authil.getRolesFromToken(token);
-
-                List<SimpleGrantedAuthority> authorities =
-                        user.getRoles().stream()
-                                .map(role -> new SimpleGrantedAuthority(role.name()))
-                                .toList();
+                List<SimpleGrantedAuthority> authorities = roleNames.stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .toList();
 
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
-                                user,
+                                username,
                                 null,
                                 authorities
                         );
 
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                authToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
 
-            filterChain.doFilter(request, response);
-
         } catch (Exception ex) {
+            log.error("JWT Authentication failed: {}", ex.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Invalid or expired JWT token");
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"Invalid or expired JWT token\"}");
+            return;
         }
+
+        filterChain.doFilter(request, response);
     }
 }
